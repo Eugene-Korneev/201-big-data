@@ -11,3 +11,5 @@ Big Data Training Homeworks
   directory.
 - **hive_scripts** \
   Contains hql files to extract, transform data and write it to kafka topics
+- **screenshots** \
+  Contains png screenshots of data from resulting kafka topic
