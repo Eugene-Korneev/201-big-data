@@ -20,7 +20,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS weather_parquet (
 
 -- Map hotels kafka stream as hive table
 CREATE EXTERNAL TABLE IF NOT EXISTS hotels (
-        Id STRING,
+        Id BIGINT,
         Name STRING,
         Country STRING,
         City STRING,
@@ -37,7 +37,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS hotels (
 
 -- Create temporary parquet table for results
 CREATE TABLE IF NOT EXISTS hotels_weather_parquet (
-        id STRING,
+        id BIGINT,
         name STRING,
         country STRING,
         city STRING,
@@ -82,7 +82,7 @@ INSERT OVERWRITE TABLE hotels_weather_parquet
 
 -- Map hotels weather kafka stream
 CREATE EXTERNAL TABLE IF NOT EXISTS hotels_weather (
-        id STRING,
+        id BIGINT,
         name STRING,
         country STRING,
         city STRING,
