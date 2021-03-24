@@ -13,3 +13,11 @@ Big Data Training Homeworks
   Contains hql files to extract, transform data and write it to kafka topics
 - **screenshots** \
   Contains png screenshots of data from resulting kafka topic
+  
+### HW05
+- **hive_scripts** \
+  Contains hql files to work with data
+- **screenshots** \
+  Contains png screenshots of data from resulting tables
+- **query-analysis** \
+  Contains query execution plans and query optimization analysis
