@@ -1,0 +1,1283 @@
+{
+	"STAGE DEPENDENCIES": {
+		"Stage-1": {
+			"ROOT STAGE": "TRUE"
+		},
+		"Stage-2": {
+			"DEPENDENT STAGES": "Stage-1"
+		},
+		"Stage-0": {
+			"DEPENDENT STAGES": "Stage-2"
+		},
+		"Stage-3": {
+			"DEPENDENT STAGES": "Stage-0"
+		}
+	},
+	"STAGE PLANS": {
+		"Stage-1": {
+			"Tez": {
+				"DagId:": "hive_20210324171250_2e3b2245-e118-4126-9442-a9e69f5a98db:22",
+				"Edges:": {
+					"Map 1": {
+						"parent": "Map 5",
+						"type": "BROADCAST_EDGE"
+					},
+					"Map 3": [
+						{
+							"parent": "Map 5",
+							"type": "BROADCAST_EDGE"
+						},
+						{
+							"parent": "Map 6",
+							"type": "BROADCAST_EDGE"
+						},
+						{
+							"parent": "Reducer 2",
+							"type": "BROADCAST_EDGE"
+						}
+					],
+					"Reducer 2": {
+						"parent": "Map 1",
+						"type": "SIMPLE_EDGE"
+					},
+					"Reducer 4": {
+						"parent": "Map 3",
+						"type": "CUSTOM_SIMPLE_EDGE"
+					}
+				},
+				"DagName:": "hive_20210324171250_2e3b2245-e118-4126-9442-a9e69f5a98db:22",
+				"Vertices:": {
+					"Map 1": {
+						"Map Operator Tree:": [
+							{
+								"TableScan": {
+									"alias:": "e",
+									"columns:": [
+										"id",
+										"srch_ci",
+										"srch_co",
+										"hotel_id"
+									],
+									"database:": "default",
+									"filterExpr:": "(datediff(srch_co, srch_ci) > 7) (type: boolean)",
+									"Statistics:": "Num rows: 2446563 Data size: 1379861760 Basic stats: COMPLETE Column stats: NONE",
+									"table:": "expedia",
+									"GatherStats:": "false",
+									"isTempTable:": "false",
+									"OperatorId:": "TS_0",
+									"children": {
+										"Filter Operator": {
+											"isSamplingPred:": "false",
+											"predicate:": "(datediff(srch_co, srch_ci) > 7) (type: boolean)",
+											"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+											"OperatorId:": "FIL_47",
+											"children": {
+												"Select Operator": {
+													"expressions:": "id (type: bigint), srch_ci (type: string), srch_co (type: string), hotel_id (type: bigint)",
+													"columnExprMap:": {
+														"_col0": "id",
+														"_col1": "srch_ci",
+														"_col2": "srch_co",
+														"_col3": "datediff(srch_co, srch_ci)",
+														"_col4": "hotel_id"
+													},
+													"outputColumnNames:": [
+														"_col0",
+														"_col1",
+														"_col2",
+														"_col4"
+													],
+													"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+													"OperatorId:": "SEL_2",
+													"children": {
+														"Lateral View Forward": {
+															"columnExprMap:": {
+																"_col0": "_col0",
+																"_col1": "_col1",
+																"_col2": "_col2",
+																"_col3": "_col3",
+																"_col4": "_col4"
+															},
+															"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+															"OperatorId:": "LVF_3",
+															"children": [
+																{
+																	"Select Operator": {
+																		"expressions:": "_col0 (type: bigint), _col1 (type: string), _col4 (type: bigint)",
+																		"columnExprMap:": {
+																			"_col0": "_col0",
+																			"_col1": "_col1",
+																			"_col2": "_col2",
+																			"_col3": "_col3",
+																			"_col4": "_col4",
+																			"org.apache.hadoop.hive.ql.plan.ExprNodeColumnDesc": "_col4"
+																		},
+																		"outputColumnNames:": [
+																			"_col0",
+																			"_col1",
+																			"_col4"
+																		],
+																		"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+																		"OperatorId:": "SEL_4",
+																		"children": {
+																			"Lateral View Join Operator": {
+																				"columnExprMap:": {
+																					"_col0": "_col0",
+																					"_col1": "_col1",
+																					"_col2": "_col2",
+																					"_col3": "_col3",
+																					"_col4": "_col4",
+																					"_col5": "pos",
+																					"_col6": "val"
+																				},
+																				"outputColumnNames:": [
+																					"_col0",
+																					"_col1",
+																					"_col4",
+																					"_col5",
+																					"_col6"
+																				],
+																				"Statistics:": "Num rows: 1631042 Data size: 919907840 Basic stats: COMPLETE Column stats: NONE",
+																				"OperatorId:": "LVJ_7",
+																				"children": {
+																					"Select Operator": {
+																						"expressions:": "_col0 (type: bigint), _col4 (type: bigint), date_add(_col1, _col5) (type: date)",
+																						"columnExprMap:": {
+																							"_col0": "_col0",
+																							"_col1": "_col4",
+																							"_col2": "date_add(_col1, _col5)"
+																						},
+																						"outputColumnNames:": [
+																							"_col0",
+																							"_col1",
+																							"_col2"
+																						],
+																						"Statistics:": "Num rows: 1631042 Data size: 919907840 Basic stats: COMPLETE Column stats: NONE",
+																						"OperatorId:": "SEL_8",
+																						"children": {
+																							"Map Join Operator": {
+																								"columnExprMap:": {
+																									"_col0": "0:_col0",
+																									"_col13": "1:avg_tmpr_c"
+																								},
+																								"condition map:": [
+																									{
+																										"": "Left Outer Join 0 to 1"
+																									}
+																								],
+																								"Estimated key counts:": "Map 5 => 1",
+																								"keys:": {
+																									"0": "_col2 (type: date), _col1 (type: bigint)",
+																									"1": "CAST( wthr_date AS DATE) (type: date), id (type: bigint)"
+																								},
+																								"outputColumnNames:": [
+																									"_col0",
+																									"_col13"
+																								],
+																								"input vertices:": {
+																									"1": "Map 5"
+																								},
+																								"Position of Big Table:": "0",
+																								"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																								"HybridGraceHashJoin:": "true",
+																								"OperatorId:": "MAPJOIN_52",
+																								"children": {
+																									"Select Operator": {
+																										"expressions:": "_col0 (type: bigint), _col13 (type: double)",
+																										"columnExprMap:": {
+																											"_col0": "_col0",
+																											"_col1": "_col13"
+																										},
+																										"outputColumnNames:": [
+																											"_col0",
+																											"_col1"
+																										],
+																										"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																										"OperatorId:": "SEL_13",
+																										"children": {
+																											"Group By Operator": {
+																												"aggregations:": [
+																													"avg(_col1)"
+																												],
+																												"columnExprMap:": {
+																													"_col0": "_col0"
+																												},
+																												"keys:": "_col0 (type: bigint)",
+																												"mode:": "hash",
+																												"outputColumnNames:": [
+																													"_col0",
+																													"_col1"
+																												],
+																												"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																												"OperatorId:": "GBY_15",
+																												"children": {
+																													"Reduce Output Operator": {
+																														"columnExprMap:": {
+																															"KEY._col0": "_col0",
+																															"VALUE._col0": "_col1"
+																														},
+																														"key expressions:": "_col0 (type: bigint)",
+																														"null sort order:": "a",
+																														"sort order:": "+",
+																														"Map-reduce partition columns:": "_col0 (type: bigint)",
+																														"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																														"tag:": "-1",
+																														"value expressions:": "_col1 (type: struct<count:bigint,sum:double,input:double>)",
+																														"auto parallelism:": "true",
+																														"OperatorId:": "RS_16",
+																														"outputname:": "Reducer 2",
+																														"outputOperator:": [
+																															"GBY_64"
+																														]
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																},
+																{
+																	"Select Operator": {
+																		"expressions:": "split(space(datediff(_col2, _col1)), ' ') (type: array<string>)",
+																		"columnExprMap:": {
+																			"_col0": "split(space(datediff(_col2, _col1)), ' ')"
+																		},
+																		"outputColumnNames:": [
+																			"_col0"
+																		],
+																		"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+																		"OperatorId:": "SEL_5",
+																		"children": {
+																			"UDTF Operator": {
+																				"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+																				"function name:": "posexplode",
+																				"OperatorId:": "UDTF_6",
+																				"children": {
+																					"Lateral View Join Operator": {
+																						"columnExprMap:": {
+																							"_col0": "_col0",
+																							"_col1": "_col1",
+																							"_col2": "_col2",
+																							"_col3": "_col3",
+																							"_col4": "_col4",
+																							"_col5": "pos",
+																							"_col6": "val"
+																						},
+																						"outputColumnNames:": [
+																							"_col0",
+																							"_col1",
+																							"_col4",
+																							"_col5",
+																							"_col6"
+																						],
+																						"Statistics:": "Num rows: 1631042 Data size: 919907840 Basic stats: COMPLETE Column stats: NONE",
+																						"OperatorId:": "LVJ_7",
+																						"children": {
+																							"Select Operator": {
+																								"expressions:": "_col0 (type: bigint), _col4 (type: bigint), date_add(_col1, _col5) (type: date)",
+																								"columnExprMap:": {
+																									"_col0": "_col0",
+																									"_col1": "_col4",
+																									"_col2": "date_add(_col1, _col5)"
+																								},
+																								"outputColumnNames:": [
+																									"_col0",
+																									"_col1",
+																									"_col2"
+																								],
+																								"Statistics:": "Num rows: 1631042 Data size: 919907840 Basic stats: COMPLETE Column stats: NONE",
+																								"OperatorId:": "SEL_8",
+																								"children": {
+																									"Map Join Operator": {
+																										"columnExprMap:": {
+																											"_col0": "0:_col0",
+																											"_col13": "1:avg_tmpr_c"
+																										},
+																										"condition map:": [
+																											{
+																												"": "Left Outer Join 0 to 1"
+																											}
+																										],
+																										"Estimated key counts:": "Map 5 => 1",
+																										"keys:": {
+																											"0": "_col2 (type: date), _col1 (type: bigint)",
+																											"1": "CAST( wthr_date AS DATE) (type: date), id (type: bigint)"
+																										},
+																										"outputColumnNames:": [
+																											"_col0",
+																											"_col13"
+																										],
+																										"input vertices:": {
+																											"1": "Map 5"
+																										},
+																										"Position of Big Table:": "0",
+																										"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																										"HybridGraceHashJoin:": "true",
+																										"OperatorId:": "MAPJOIN_52",
+																										"children": {
+																											"Select Operator": {
+																												"expressions:": "_col0 (type: bigint), _col13 (type: double)",
+																												"columnExprMap:": {
+																													"_col0": "_col0",
+																													"_col1": "_col13"
+																												},
+																												"outputColumnNames:": [
+																													"_col0",
+																													"_col1"
+																												],
+																												"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																												"OperatorId:": "SEL_13",
+																												"children": {
+																													"Group By Operator": {
+																														"aggregations:": [
+																															"avg(_col1)"
+																														],
+																														"columnExprMap:": {
+																															"_col0": "_col0"
+																														},
+																														"keys:": "_col0 (type: bigint)",
+																														"mode:": "hash",
+																														"outputColumnNames:": [
+																															"_col0",
+																															"_col1"
+																														],
+																														"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																														"OperatorId:": "GBY_15",
+																														"children": {
+																															"Reduce Output Operator": {
+																																"columnExprMap:": {
+																																	"KEY._col0": "_col0",
+																																	"VALUE._col0": "_col1"
+																																},
+																																"key expressions:": "_col0 (type: bigint)",
+																																"null sort order:": "a",
+																																"sort order:": "+",
+																																"Map-reduce partition columns:": "_col0 (type: bigint)",
+																																"Statistics:": "Num rows: 1794146 Data size: 1011898645 Basic stats: PARTIAL Column stats: NONE",
+																																"tag:": "-1",
+																																"value expressions:": "_col1 (type: struct<count:bigint,sum:double,input:double>)",
+																																"auto parallelism:": "true",
+																																"OperatorId:": "RS_16",
+																																"outputname:": "Reducer 2",
+																																"outputOperator:": [
+																																	"GBY_64"
+																																]
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															]
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						],
+						"Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": "[e]"
+						},
+						"Path -> Partition:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": {
+								"Partition": {
+									"base file name:": "expedia",
+									"input format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+									"output format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+									"properties:": {
+										"EXTERNAL": "TRUE",
+										"bucket_count": "-1",
+										"bucketing_version": "2",
+										"column.name.delimiter": ",",
+										"columns": "id,date_time,site_name,posa_continent,user_location_country,user_location_region,user_location_city,orig_destination_distance,user_id,is_mobile,is_package,channel,srch_ci,srch_co,srch_adults_cnt,srch_children_cnt,srch_rm_cnt,srch_destination_id,srch_destination_type_id,hotel_id",
+										"columns.types": "bigint:string:int:int:int:int:int:double:int:int:int:int:string:string:int:int:int:int:int:bigint",
+										"file.inputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+										"file.outputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+										"location": "hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia",
+										"name": "default.expedia",
+										"numFiles": "25",
+										"serialization.ddl": "struct expedia { i64 id, string date_time, i32 site_name, i32 posa_continent, i32 user_location_country, i32 user_location_region, i32 user_location_city, double orig_destination_distance, i32 user_id, i32 is_mobile, i32 is_package, i32 channel, string srch_ci, string srch_co, i32 srch_adults_cnt, i32 srch_children_cnt, i32 srch_rm_cnt, i32 srch_destination_id, i32 srch_destination_type_id, i64 hotel_id}",
+										"serialization.format": "1",
+										"serialization.lib": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+										"totalSize": "137986171",
+										"transient_lastDdlTime": "1616166624"
+									},
+									"serde:": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+									"": {
+										"input format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+										"output format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+										"properties:": {
+											"EXTERNAL": "TRUE",
+											"avro.schema.literal": "{\"type\":\"record\",\"name\":\"expedia\",\"namespace\":\"default\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"date_time\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"site_name\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"posa_continent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_country\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_region\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_city\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"orig_destination_distance\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"user_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"is_mobile\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"is_package\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"channel\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_ci\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"srch_co\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"srch_adults_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_children_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_rm_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_destination_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_destination_type_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"hotel_id\",\"type\":[\"null\",\"long\"],\"default\":null}]}",
+											"bucket_count": "-1",
+											"bucketing_version": "2",
+											"column.name.delimiter": ",",
+											"columns": "id,date_time,site_name,posa_continent,user_location_country,user_location_region,user_location_city,orig_destination_distance,user_id,is_mobile,is_package,channel,srch_ci,srch_co,srch_adults_cnt,srch_children_cnt,srch_rm_cnt,srch_destination_id,srch_destination_type_id,hotel_id",
+											"columns.types": "bigint:string:int:int:int:int:int:double:int:int:int:int:string:string:int:int:int:int:int:bigint",
+											"file.inputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+											"file.outputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+											"location": "hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia",
+											"name": "default.expedia",
+											"numFiles": "25",
+											"serialization.ddl": "struct expedia { i64 id, string date_time, i32 site_name, i32 posa_continent, i32 user_location_country, i32 user_location_region, i32 user_location_city, double orig_destination_distance, i32 user_id, i32 is_mobile, i32 is_package, i32 channel, string srch_ci, string srch_co, i32 srch_adults_cnt, i32 srch_children_cnt, i32 srch_rm_cnt, i32 srch_destination_id, i32 srch_destination_type_id, i64 hotel_id}",
+											"serialization.format": "1",
+											"serialization.lib": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+											"totalSize": "137986171",
+											"transient_lastDdlTime": "1616166624"
+										},
+										"serde:": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+										"name:": "default.expedia"
+									},
+									"name:": "default.expedia"
+								}
+							}
+						},
+						"Truncated Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": "[e]"
+						}
+					},
+					"Map 3": {
+						"Map Operator Tree:": [
+							{
+								"TableScan": {
+									"alias:": "e",
+									"columns:": [
+										"id",
+										"srch_ci",
+										"srch_co",
+										"hotel_id"
+									],
+									"database:": "default",
+									"filterExpr:": "(datediff(srch_co, srch_ci) > 7) (type: boolean)",
+									"Statistics:": "Num rows: 2446563 Data size: 1379861760 Basic stats: COMPLETE Column stats: NONE",
+									"table:": "expedia",
+									"GatherStats:": "false",
+									"isTempTable:": "false",
+									"OperatorId:": "TS_19",
+									"children": {
+										"Filter Operator": {
+											"isSamplingPred:": "false",
+											"predicate:": "(datediff(srch_co, srch_ci) > 7) (type: boolean)",
+											"Statistics:": "Num rows: 815521 Data size: 459953920 Basic stats: COMPLETE Column stats: NONE",
+											"OperatorId:": "FIL_49",
+											"children": {
+												"Map Join Operator": {
+													"columnExprMap:": {
+														"_col0": "0:id",
+														"_col12": "0:srch_ci",
+														"_col13": "0:srch_co",
+														"_col19": "0:hotel_id",
+														"_col33": "1:avg_tmpr_c"
+													},
+													"condition map:": [
+														{
+															"": "Left Outer Join 0 to 1"
+														}
+													],
+													"Estimated key counts:": "Map 5 => 1",
+													"keys:": {
+														"0": "srch_ci (type: string), hotel_id (type: bigint)",
+														"1": "wthr_date (type: string), id (type: bigint)"
+													},
+													"outputColumnNames:": [
+														"_col0",
+														"_col12",
+														"_col13",
+														"_col19",
+														"_col33"
+													],
+													"input vertices:": {
+														"1": "Map 5"
+													},
+													"Position of Big Table:": "0",
+													"Statistics:": "Num rows: 897073 Data size: 505949322 Basic stats: PARTIAL Column stats: NONE",
+													"HybridGraceHashJoin:": "true",
+													"OperatorId:": "MAPJOIN_53",
+													"children": {
+														"Map Join Operator": {
+															"columnExprMap:": {
+																"_col0": "0:_col0",
+																"_col12": "0:_col12",
+																"_col13": "0:_col13",
+																"_col33": "0:_col33",
+																"_col51": "1:avg_tmpr_c"
+															},
+															"condition map:": [
+																{
+																	"": "Left Outer Join 0 to 1"
+																}
+															],
+															"Estimated key counts:": "Map 6 => 1",
+															"keys:": {
+																"0": "_col13 (type: string), _col19 (type: bigint)",
+																"1": "wthr_date (type: string), id (type: bigint)"
+															},
+															"outputColumnNames:": [
+																"_col0",
+																"_col12",
+																"_col13",
+																"_col33",
+																"_col51"
+															],
+															"input vertices:": {
+																"1": "Map 6"
+															},
+															"Position of Big Table:": "0",
+															"Statistics:": "Num rows: 986780 Data size: 556544266 Basic stats: PARTIAL Column stats: NONE",
+															"HybridGraceHashJoin:": "true",
+															"OperatorId:": "MAPJOIN_54",
+															"children": {
+																"Map Join Operator": {
+																	"columnExprMap:": {
+																		"_col0": "0:_col0",
+																		"_col12": "0:_col12",
+																		"_col13": "0:_col13",
+																		"_col33": "0:_col33",
+																		"_col51": "0:_col51",
+																		"_col60": "1:_col1"
+																	},
+																	"condition map:": [
+																		{
+																			"": "Left Outer Join 0 to 1"
+																		}
+																	],
+																	"Estimated key counts:": "Reducer 2 => 897073",
+																	"keys:": {
+																		"0": "_col0 (type: bigint)",
+																		"1": "_col0 (type: bigint)"
+																	},
+																	"outputColumnNames:": [
+																		"_col0",
+																		"_col12",
+																		"_col13",
+																		"_col33",
+																		"_col51",
+																		"_col60"
+																	],
+																	"input vertices:": {
+																		"1": "Reducer 2"
+																	},
+																	"Position of Big Table:": "0",
+																	"Statistics:": "Num rows: 1085458 Data size: 612198705 Basic stats: PARTIAL Column stats: NONE",
+																	"HybridGraceHashJoin:": "true",
+																	"OperatorId:": "MAPJOIN_55",
+																	"children": {
+																		"Select Operator": {
+																			"expressions:": "_col0 (type: bigint), _col12 (type: string), _col13 (type: string), datediff(_col13, _col12) (type: int), _col33 (type: double), _col51 (type: double), (_col51 - _col33) (type: double), _col60 (type: double)",
+																			"columnExprMap:": {
+																				"_col0": "_col0",
+																				"_col1": "_col12",
+																				"_col2": "_col13",
+																				"_col3": "datediff(_col13, _col12)",
+																				"_col4": "_col33",
+																				"_col5": "_col51",
+																				"_col6": "(_col51 - _col33)",
+																				"_col7": "_col60"
+																			},
+																			"outputColumnNames:": [
+																				"_col0",
+																				"_col1",
+																				"_col2",
+																				"_col3",
+																				"_col4",
+																				"_col5",
+																				"_col6",
+																				"_col7"
+																			],
+																			"Statistics:": "Num rows: 1085458 Data size: 612198705 Basic stats: PARTIAL Column stats: NONE",
+																			"OperatorId:": "SEL_32",
+																			"children": [
+																				{
+																					"File Output Operator": {
+																						"compressed:": "false",
+																						"GlobalTableId:": "1",
+																						"directory:": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend/.hive-staging_hive_2021-03-24_17-12-50_598_84416585884186945-3/-ext-10000",
+																						"NumFilesPerFileSink:": "1",
+																						"Statistics:": "Num rows: 1085458 Data size: 612198705 Basic stats: PARTIAL Column stats: NONE",
+																						"Stats Publishing Key Prefix:": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend/.hive-staging_hive_2021-03-24_17-12-50_598_84416585884186945-3/-ext-10000/",
+																						"table:": {
+																							"input format:": "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat",
+																							"output format:": "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat",
+																							"properties:": {
+																								"COLUMN_STATS_ACCURATE": "{\"BASIC_STATS\":\"true\",\"COLUMN_STATS\":{\"avg_tmpr_during_stay\":\"true\",\"checkin\":\"true\",\"checkin_tmpr\":\"true\",\"checkout\":\"true\",\"checkout_tmpr\":\"true\",\"days_of_stay\":\"true\",\"visit_id\":\"true\",\"weather_trend\":\"true\"}}",
+																								"bucket_count": "-1",
+																								"bucketing_version": "2",
+																								"column.name.delimiter": ",",
+																								"columns": "visit_id,checkin,checkout,days_of_stay,checkin_tmpr,checkout_tmpr,weather_trend,avg_tmpr_during_stay",
+																								"columns.types": "bigint:string:string:int:double:double:double:double",
+																								"file.inputformat": "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat",
+																								"file.outputformat": "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat",
+																								"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend",
+																								"name": "default.result_wthr_trend",
+																								"numFiles": "1",
+																								"numRows": "55830",
+																								"rawDataSize": "0",
+																								"serialization.ddl": "struct result_wthr_trend { i64 visit_id, string checkin, string checkout, i32 days_of_stay, double checkin_tmpr, double checkout_tmpr, double weather_trend, double avg_tmpr_during_stay}",
+																								"serialization.format": "1",
+																								"serialization.lib": "org.apache.hadoop.hive.ql.io.orc.OrcSerde",
+																								"totalSize": "1009667",
+																								"transactional": "true",
+																								"transactional_properties": "default",
+																								"transient_lastDdlTime": "1616598498"
+																							},
+																							"serde:": "org.apache.hadoop.hive.ql.io.orc.OrcSerde",
+																							"name:": "default.result_wthr_trend"
+																						},
+																						"TotalFiles:": "1",
+																						"Write Type:": "INSERT",
+																						"GatherStats:": "true",
+																						"MultiFileSpray:": "false",
+																						"OperatorId:": "FS_33"
+																					}
+																				},
+																				{
+																					"Select Operator": {
+																						"expressions:": "_col0 (type: bigint), _col1 (type: string), _col2 (type: string), _col3 (type: int), _col4 (type: double), _col5 (type: double), _col6 (type: double), _col7 (type: double)",
+																						"columnExprMap:": {
+																							"avg_tmpr_during_stay": "_col7",
+																							"checkin": "_col1",
+																							"checkin_tmpr": "_col4",
+																							"checkout": "_col2",
+																							"checkout_tmpr": "_col5",
+																							"days_of_stay": "_col3",
+																							"visit_id": "_col0",
+																							"weather_trend": "_col6"
+																						},
+																						"outputColumnNames:": [
+																							"visit_id",
+																							"checkin",
+																							"checkout",
+																							"days_of_stay",
+																							"checkin_tmpr",
+																							"checkout_tmpr",
+																							"weather_trend",
+																							"avg_tmpr_during_stay"
+																						],
+																						"Statistics:": "Num rows: 1085458 Data size: 612198705 Basic stats: PARTIAL Column stats: NONE",
+																						"OperatorId:": "SEL_35",
+																						"children": {
+																							"Group By Operator": {
+																								"aggregations:": [
+																									"compute_stats(visit_id, 'hll')",
+																									"compute_stats(checkin, 'hll')",
+																									"compute_stats(checkout, 'hll')",
+																									"compute_stats(days_of_stay, 'hll')",
+																									"compute_stats(checkin_tmpr, 'hll')",
+																									"compute_stats(checkout_tmpr, 'hll')",
+																									"compute_stats(weather_trend, 'hll')",
+																									"compute_stats(avg_tmpr_during_stay, 'hll')"
+																								],
+																								"mode:": "hash",
+																								"outputColumnNames:": [
+																									"_col0",
+																									"_col1",
+																									"_col2",
+																									"_col3",
+																									"_col4",
+																									"_col5",
+																									"_col6",
+																									"_col7"
+																								],
+																								"Statistics:": "Num rows: 1 Data size: 3424 Basic stats: PARTIAL Column stats: NONE",
+																								"OperatorId:": "GBY_36",
+																								"children": {
+																									"Reduce Output Operator": {
+																										"columnExprMap:": {
+																											"VALUE._col0": "_col0",
+																											"VALUE._col1": "_col1",
+																											"VALUE._col2": "_col2",
+																											"VALUE._col3": "_col3",
+																											"VALUE._col4": "_col4",
+																											"VALUE._col5": "_col5",
+																											"VALUE._col6": "_col6",
+																											"VALUE._col7": "_col7"
+																										},
+																										"null sort order:": "",
+																										"sort order:": "",
+																										"Statistics:": "Num rows: 1 Data size: 3424 Basic stats: PARTIAL Column stats: NONE",
+																										"tag:": "-1",
+																										"value expressions:": "_col0 (type: struct<columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary>), _col1 (type: struct<columntype:string,maxlength:bigint,sumlength:bigint,count:bigint,countnulls:bigint,bitvector:binary>), _col2 (type: struct<columntype:string,maxlength:bigint,sumlength:bigint,count:bigint,countnulls:bigint,bitvector:binary>), _col3 (type: struct<columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary>), _col4 (type: struct<columntype:string,min:double,max:double,countnulls:bigint,bitvector:binary>), _col5 (type: struct<columntype:string,min:double,max:double,countnulls:bigint,bitvector:binary>), _col6 (type: struct<columntype:string,min:double,max:double,countnulls:bigint,bitvector:binary>), _col7 (type: struct<columntype:string,min:double,max:double,countnulls:bigint,bitvector:binary>)",
+																										"auto parallelism:": "false",
+																										"OperatorId:": "RS_37",
+																										"outputname:": "Reducer 4",
+																										"outputOperator:": [
+																											"GBY_38"
+																										]
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			]
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						],
+						"Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": "[e]"
+						},
+						"Path -> Partition:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": {
+								"Partition": {
+									"base file name:": "expedia",
+									"input format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+									"output format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+									"properties:": {
+										"EXTERNAL": "TRUE",
+										"bucket_count": "-1",
+										"bucketing_version": "2",
+										"column.name.delimiter": ",",
+										"columns": "id,date_time,site_name,posa_continent,user_location_country,user_location_region,user_location_city,orig_destination_distance,user_id,is_mobile,is_package,channel,srch_ci,srch_co,srch_adults_cnt,srch_children_cnt,srch_rm_cnt,srch_destination_id,srch_destination_type_id,hotel_id",
+										"columns.types": "bigint:string:int:int:int:int:int:double:int:int:int:int:string:string:int:int:int:int:int:bigint",
+										"file.inputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+										"file.outputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+										"location": "hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia",
+										"name": "default.expedia",
+										"numFiles": "25",
+										"serialization.ddl": "struct expedia { i64 id, string date_time, i32 site_name, i32 posa_continent, i32 user_location_country, i32 user_location_region, i32 user_location_city, double orig_destination_distance, i32 user_id, i32 is_mobile, i32 is_package, i32 channel, string srch_ci, string srch_co, i32 srch_adults_cnt, i32 srch_children_cnt, i32 srch_rm_cnt, i32 srch_destination_id, i32 srch_destination_type_id, i64 hotel_id}",
+										"serialization.format": "1",
+										"serialization.lib": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+										"totalSize": "137986171",
+										"transient_lastDdlTime": "1616166624"
+									},
+									"serde:": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+									"": {
+										"input format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+										"output format:": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+										"properties:": {
+											"EXTERNAL": "TRUE",
+											"avro.schema.literal": "{\"type\":\"record\",\"name\":\"expedia\",\"namespace\":\"default\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"date_time\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"site_name\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"posa_continent\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_country\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_region\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"user_location_city\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"orig_destination_distance\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"user_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"is_mobile\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"is_package\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"channel\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_ci\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"srch_co\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"srch_adults_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_children_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_rm_cnt\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_destination_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"srch_destination_type_id\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"hotel_id\",\"type\":[\"null\",\"long\"],\"default\":null}]}",
+											"bucket_count": "-1",
+											"bucketing_version": "2",
+											"column.name.delimiter": ",",
+											"columns": "id,date_time,site_name,posa_continent,user_location_country,user_location_region,user_location_city,orig_destination_distance,user_id,is_mobile,is_package,channel,srch_ci,srch_co,srch_adults_cnt,srch_children_cnt,srch_rm_cnt,srch_destination_id,srch_destination_type_id,hotel_id",
+											"columns.types": "bigint:string:int:int:int:int:int:double:int:int:int:int:string:string:int:int:int:int:int:bigint",
+											"file.inputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat",
+											"file.outputformat": "org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat",
+											"location": "hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia",
+											"name": "default.expedia",
+											"numFiles": "25",
+											"serialization.ddl": "struct expedia { i64 id, string date_time, i32 site_name, i32 posa_continent, i32 user_location_country, i32 user_location_region, i32 user_location_city, double orig_destination_distance, i32 user_id, i32 is_mobile, i32 is_package, i32 channel, string srch_ci, string srch_co, i32 srch_adults_cnt, i32 srch_children_cnt, i32 srch_rm_cnt, i32 srch_destination_id, i32 srch_destination_type_id, i64 hotel_id}",
+											"serialization.format": "1",
+											"serialization.lib": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+											"totalSize": "137986171",
+											"transient_lastDdlTime": "1616166624"
+										},
+										"serde:": "org.apache.hadoop.hive.serde2.avro.AvroSerDe",
+										"name:": "default.expedia"
+									},
+									"name:": "default.expedia"
+								}
+							}
+						},
+						"Truncated Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/201_hw_dataset/expedia": "[e]"
+						}
+					},
+					"Map 5": {
+						"Map Operator Tree:": [
+							{
+								"TableScan": {
+									"alias:": "hw1",
+									"columns:": [
+										"id",
+										"wthr_date",
+										"avg_tmpr_c"
+									],
+									"database:": "default",
+									"Statistics:": "Num rows: 1 Data size: 0 Basic stats: PARTIAL Column stats: NONE",
+									"table:": "hotels_weather",
+									"GatherStats:": "false",
+									"isTempTable:": "false",
+									"OperatorId:": "TS_20",
+									"children": [
+										{
+											"Reduce Output Operator": {
+												"columnExprMap:": {
+													"KEY.reducesinkkey0": "wthr_date",
+													"KEY.reducesinkkey1": "id",
+													"VALUE._col8": "avg_tmpr_c"
+												},
+												"key expressions:": "wthr_date (type: string), id (type: bigint)",
+												"null sort order:": "aa",
+												"sort order:": "++",
+												"Map-reduce partition columns:": "wthr_date (type: string), id (type: bigint)",
+												"Statistics:": "Num rows: 1 Data size: 0 Basic stats: PARTIAL Column stats: NONE",
+												"tag:": "1",
+												"value expressions:": "avg_tmpr_c (type: double)",
+												"auto parallelism:": "true",
+												"OperatorId:": "RS_60",
+												"outputname:": "Map 3",
+												"outputOperator:": [
+													"TS_19"
+												]
+											}
+										},
+										{
+											"Reduce Output Operator": {
+												"columnExprMap:": {
+													"KEY.reducesinkkey0": "CAST( wthr_date AS DATE)",
+													"KEY.reducesinkkey1": "id",
+													"VALUE._col9": "avg_tmpr_c"
+												},
+												"key expressions:": "CAST( wthr_date AS DATE) (type: date), id (type: bigint)",
+												"null sort order:": "aa",
+												"sort order:": "++",
+												"Map-reduce partition columns:": "CAST( wthr_date AS DATE) (type: date), id (type: bigint)",
+												"Statistics:": "Num rows: 1 Data size: 0 Basic stats: PARTIAL Column stats: NONE",
+												"tag:": "1",
+												"value expressions:": "avg_tmpr_c (type: double)",
+												"auto parallelism:": "true",
+												"OperatorId:": "RS_61",
+												"outputname:": "Map 1",
+												"outputOperator:": [
+													"TS_0"
+												]
+											}
+										}
+									]
+								}
+							}
+						],
+						"Execution mode:": "vectorized",
+						"Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": "[hw1]"
+						},
+						"Path -> Partition:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": {
+								"Partition": {
+									"base file name:": "hotels_weather",
+									"input format:": "org.apache.hadoop.hive.kafka.KafkaInputFormat",
+									"output format:": "org.apache.hadoop.hive.kafka.KafkaOutputFormat",
+									"properties:": {
+										"EXTERNAL": "TRUE",
+										"bucket_count": "-1",
+										"bucketing_version": "2",
+										"column.name.delimiter": ",",
+										"columns": "id,name,country,city,address,lat,lng,geohash,wthr_date,avg_tmpr_f,avg_tmpr_c",
+										"columns.types": "bigint:string:string:string:string:double:double:string:string:double:double",
+										"file.inputformat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+										"file.outputformat": "org.apache.hadoop.mapred.SequenceFileOutputFormat",
+										"hive.kafka.max.retries": "6",
+										"hive.kafka.metadata.poll.timeout.ms": "30000",
+										"hive.kafka.optimistic.commit": "false",
+										"hive.kafka.poll.timeout.ms": "5000",
+										"kafka.bootstrap.servers": "sandbox-hdp:6667",
+										"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+										"kafka.topic": "hotels-weather",
+										"kafka.write.semantic": "AT_LEAST_ONCE",
+										"last_modified_by": "hive",
+										"last_modified_time": "1616170778",
+										"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather",
+										"name": "default.hotels_weather",
+										"numFiles": "0",
+										"numRows": "0",
+										"rawDataSize": "0",
+										"serialization.ddl": "struct hotels_weather { i64 id, string name, string country, string city, string address, double lat, double lng, string geohash, string wthr_date, double avg_tmpr_f, double avg_tmpr_c}",
+										"serialization.format": "1",
+										"serialization.lib": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+										"storage_handler": "org.apache.hadoop.hive.kafka.KafkaStorageHandler",
+										"totalSize": "0",
+										"transient_lastDdlTime": "1616170778"
+									},
+									"serde:": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+									"": {
+										"input format:": "org.apache.hadoop.hive.kafka.KafkaInputFormat",
+										"jobProperties:": {
+											"hive.kafka.max.retries": "6",
+											"hive.kafka.metadata.poll.timeout.ms": "30000",
+											"hive.kafka.optimistic.commit": "false",
+											"hive.kafka.poll.timeout.ms": "5000",
+											"kafka.bootstrap.servers": "sandbox-hdp:6667",
+											"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+											"kafka.topic": "hotels-weather",
+											"kafka.write.semantic": "AT_LEAST_ONCE"
+										},
+										"output format:": "org.apache.hadoop.hive.kafka.KafkaOutputFormat",
+										"properties:": {
+											"EXTERNAL": "TRUE",
+											"bucket_count": "-1",
+											"bucketing_version": "2",
+											"column.name.delimiter": ",",
+											"columns": "id,name,country,city,address,lat,lng,geohash,wthr_date,avg_tmpr_f,avg_tmpr_c",
+											"columns.types": "bigint:string:string:string:string:double:double:string:string:double:double",
+											"file.inputformat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+											"file.outputformat": "org.apache.hadoop.mapred.SequenceFileOutputFormat",
+											"hive.kafka.max.retries": "6",
+											"hive.kafka.metadata.poll.timeout.ms": "30000",
+											"hive.kafka.optimistic.commit": "false",
+											"hive.kafka.poll.timeout.ms": "5000",
+											"kafka.bootstrap.servers": "sandbox-hdp:6667",
+											"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+											"kafka.topic": "hotels-weather",
+											"kafka.write.semantic": "AT_LEAST_ONCE",
+											"last_modified_by": "hive",
+											"last_modified_time": "1616170778",
+											"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather",
+											"name": "default.hotels_weather",
+											"numFiles": "0",
+											"numRows": "0",
+											"rawDataSize": "0",
+											"serialization.ddl": "struct hotels_weather { i64 id, string name, string country, string city, string address, double lat, double lng, string geohash, string wthr_date, double avg_tmpr_f, double avg_tmpr_c}",
+											"serialization.format": "1",
+											"serialization.lib": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+											"storage_handler": "org.apache.hadoop.hive.kafka.KafkaStorageHandler",
+											"totalSize": "0",
+											"transient_lastDdlTime": "1616170778"
+										},
+										"serde:": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+										"name:": "default.hotels_weather"
+									},
+									"name:": "default.hotels_weather"
+								}
+							}
+						},
+						"Truncated Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": "[hw1]"
+						}
+					},
+					"Map 6": {
+						"Map Operator Tree:": [
+							{
+								"TableScan": {
+									"alias:": "hw2",
+									"columns:": [
+										"id",
+										"wthr_date",
+										"avg_tmpr_c"
+									],
+									"database:": "default",
+									"Statistics:": "Num rows: 1 Data size: 0 Basic stats: PARTIAL Column stats: NONE",
+									"table:": "hotels_weather",
+									"GatherStats:": "false",
+									"isTempTable:": "false",
+									"OperatorId:": "TS_21",
+									"children": {
+										"Reduce Output Operator": {
+											"columnExprMap:": {
+												"KEY.reducesinkkey0": "wthr_date",
+												"KEY.reducesinkkey1": "id",
+												"VALUE._col8": "avg_tmpr_c"
+											},
+											"key expressions:": "wthr_date (type: string), id (type: bigint)",
+											"null sort order:": "aa",
+											"sort order:": "++",
+											"Map-reduce partition columns:": "wthr_date (type: string), id (type: bigint)",
+											"Statistics:": "Num rows: 1 Data size: 0 Basic stats: PARTIAL Column stats: NONE",
+											"tag:": "1",
+											"value expressions:": "avg_tmpr_c (type: double)",
+											"auto parallelism:": "true",
+											"OperatorId:": "RS_66",
+											"outputname:": "Map 3",
+											"outputOperator:": [
+												"TS_19"
+											]
+										}
+									}
+								}
+							}
+						],
+						"Execution mode:": "vectorized",
+						"Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": "[hw2]"
+						},
+						"Path -> Partition:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": {
+								"Partition": {
+									"base file name:": "hotels_weather",
+									"input format:": "org.apache.hadoop.hive.kafka.KafkaInputFormat",
+									"output format:": "org.apache.hadoop.hive.kafka.KafkaOutputFormat",
+									"properties:": {
+										"EXTERNAL": "TRUE",
+										"bucket_count": "-1",
+										"bucketing_version": "2",
+										"column.name.delimiter": ",",
+										"columns": "id,name,country,city,address,lat,lng,geohash,wthr_date,avg_tmpr_f,avg_tmpr_c",
+										"columns.types": "bigint:string:string:string:string:double:double:string:string:double:double",
+										"file.inputformat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+										"file.outputformat": "org.apache.hadoop.mapred.SequenceFileOutputFormat",
+										"hive.kafka.max.retries": "6",
+										"hive.kafka.metadata.poll.timeout.ms": "30000",
+										"hive.kafka.optimistic.commit": "false",
+										"hive.kafka.poll.timeout.ms": "5000",
+										"kafka.bootstrap.servers": "sandbox-hdp:6667",
+										"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+										"kafka.topic": "hotels-weather",
+										"kafka.write.semantic": "AT_LEAST_ONCE",
+										"last_modified_by": "hive",
+										"last_modified_time": "1616170778",
+										"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather",
+										"name": "default.hotels_weather",
+										"numFiles": "0",
+										"numRows": "0",
+										"rawDataSize": "0",
+										"serialization.ddl": "struct hotels_weather { i64 id, string name, string country, string city, string address, double lat, double lng, string geohash, string wthr_date, double avg_tmpr_f, double avg_tmpr_c}",
+										"serialization.format": "1",
+										"serialization.lib": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+										"storage_handler": "org.apache.hadoop.hive.kafka.KafkaStorageHandler",
+										"totalSize": "0",
+										"transient_lastDdlTime": "1616170778"
+									},
+									"serde:": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+									"": {
+										"input format:": "org.apache.hadoop.hive.kafka.KafkaInputFormat",
+										"jobProperties:": {
+											"hive.kafka.max.retries": "6",
+											"hive.kafka.metadata.poll.timeout.ms": "30000",
+											"hive.kafka.optimistic.commit": "false",
+											"hive.kafka.poll.timeout.ms": "5000",
+											"kafka.bootstrap.servers": "sandbox-hdp:6667",
+											"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+											"kafka.topic": "hotels-weather",
+											"kafka.write.semantic": "AT_LEAST_ONCE"
+										},
+										"output format:": "org.apache.hadoop.hive.kafka.KafkaOutputFormat",
+										"properties:": {
+											"EXTERNAL": "TRUE",
+											"bucket_count": "-1",
+											"bucketing_version": "2",
+											"column.name.delimiter": ",",
+											"columns": "id,name,country,city,address,lat,lng,geohash,wthr_date,avg_tmpr_f,avg_tmpr_c",
+											"columns.types": "bigint:string:string:string:string:double:double:string:string:double:double",
+											"file.inputformat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+											"file.outputformat": "org.apache.hadoop.mapred.SequenceFileOutputFormat",
+											"hive.kafka.max.retries": "6",
+											"hive.kafka.metadata.poll.timeout.ms": "30000",
+											"hive.kafka.optimistic.commit": "false",
+											"hive.kafka.poll.timeout.ms": "5000",
+											"kafka.bootstrap.servers": "sandbox-hdp:6667",
+											"kafka.serde.class": "org.apache.hadoop.hive.serde2.JsonSerDe",
+											"kafka.topic": "hotels-weather",
+											"kafka.write.semantic": "AT_LEAST_ONCE",
+											"last_modified_by": "hive",
+											"last_modified_time": "1616170778",
+											"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather",
+											"name": "default.hotels_weather",
+											"numFiles": "0",
+											"numRows": "0",
+											"rawDataSize": "0",
+											"serialization.ddl": "struct hotels_weather { i64 id, string name, string country, string city, string address, double lat, double lng, string geohash, string wthr_date, double avg_tmpr_f, double avg_tmpr_c}",
+											"serialization.format": "1",
+											"serialization.lib": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+											"storage_handler": "org.apache.hadoop.hive.kafka.KafkaStorageHandler",
+											"totalSize": "0",
+											"transient_lastDdlTime": "1616170778"
+										},
+										"serde:": "org.apache.hadoop.hive.kafka.KafkaSerDe",
+										"name:": "default.hotels_weather"
+									},
+									"name:": "default.hotels_weather"
+								}
+							}
+						},
+						"Truncated Path -> Alias:": {
+							"hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/external/hive/hotels_weather": "[hw2]"
+						}
+					},
+					"Reducer 2": {
+						"Execution mode:": "vectorized",
+						"Needs Tagging:": "false",
+						"Reduce Operator Tree:": {
+							"Group By Operator": {
+								"aggregations:": [
+									"avg(VALUE._col0)"
+								],
+								"columnExprMap:": {
+									"_col0": "KEY._col0"
+								},
+								"keys:": "KEY._col0 (type: bigint)",
+								"mode:": "mergepartial",
+								"outputColumnNames:": [
+									"_col0",
+									"_col1"
+								],
+								"Statistics:": "Num rows: 897073 Data size: 505949322 Basic stats: PARTIAL Column stats: NONE",
+								"OperatorId:": "GBY_64",
+								"children": {
+									"Reduce Output Operator": {
+										"columnExprMap:": {
+											"KEY.reducesinkkey0": "_col0",
+											"VALUE._col0": "_col1"
+										},
+										"key expressions:": "_col0 (type: bigint)",
+										"null sort order:": "a",
+										"sort order:": "+",
+										"Map-reduce partition columns:": "_col0 (type: bigint)",
+										"Statistics:": "Num rows: 897073 Data size: 505949322 Basic stats: PARTIAL Column stats: NONE",
+										"tag:": "1",
+										"value expressions:": "_col1 (type: double)",
+										"auto parallelism:": "true",
+										"OperatorId:": "RS_65",
+										"outputname:": "Map 3",
+										"outputOperator:": [
+											"TS_19"
+										]
+									}
+								}
+							}
+						}
+					},
+					"Reducer 4": {
+						"Needs Tagging:": "false",
+						"Reduce Operator Tree:": {
+							"Group By Operator": {
+								"aggregations:": [
+									"compute_stats(VALUE._col0)",
+									"compute_stats(VALUE._col1)",
+									"compute_stats(VALUE._col2)",
+									"compute_stats(VALUE._col3)",
+									"compute_stats(VALUE._col4)",
+									"compute_stats(VALUE._col5)",
+									"compute_stats(VALUE._col6)",
+									"compute_stats(VALUE._col7)"
+								],
+								"mode:": "mergepartial",
+								"outputColumnNames:": [
+									"_col0",
+									"_col1",
+									"_col2",
+									"_col3",
+									"_col4",
+									"_col5",
+									"_col6",
+									"_col7"
+								],
+								"Statistics:": "Num rows: 1 Data size: 3520 Basic stats: PARTIAL Column stats: NONE",
+								"OperatorId:": "GBY_38",
+								"children": {
+									"File Output Operator": {
+										"compressed:": "false",
+										"GlobalTableId:": "0",
+										"directory:": "hdfs://sandbox-hdp.hortonworks.com:8020/tmp/hive/hive/a49042ad-178b-4407-8d1c-09c45740a202/hive_2021-03-24_17-12-50_669_6680487970776132337-3/-mr-10000/.hive-staging_hive_2021-03-24_17-12-50_669_6680487970776132337-3/-ext-10001",
+										"NumFilesPerFileSink:": "1",
+										"Statistics:": "Num rows: 1 Data size: 3520 Basic stats: PARTIAL Column stats: NONE",
+										"Stats Publishing Key Prefix:": "hdfs://sandbox-hdp.hortonworks.com:8020/tmp/hive/hive/a49042ad-178b-4407-8d1c-09c45740a202/hive_2021-03-24_17-12-50_669_6680487970776132337-3/-mr-10000/.hive-staging_hive_2021-03-24_17-12-50_669_6680487970776132337-3/-ext-10001/",
+										"table:": {
+											"input format:": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+											"output format:": "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat",
+											"properties:": {
+												"columns": "_col0,_col1,_col2,_col3,_col4,_col5,_col6,_col7",
+												"columns.types": "struct<columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,maxlength:bigint,avglength:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,maxlength:bigint,avglength:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,min:double,max:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,min:double,max:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,min:double,max:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>:struct<columntype:string,min:double,max:double,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary>",
+												"escape.delim": "\\",
+												"hive.serialization.extend.additional.nesting.levels": "true",
+												"serialization.escape.crlf": "true",
+												"serialization.format": "1",
+												"serialization.lib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
+											},
+											"serde:": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
+										},
+										"TotalFiles:": "1",
+										"GatherStats:": "false",
+										"MultiFileSpray:": "false",
+										"OperatorId:": "FS_40"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"Stage-2": {
+			"Dependency Collection": {}
+		},
+		"Stage-0": {
+			"Move Operator": {
+				"tables:": {
+					"replace:": "false",
+					"source:": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend/.hive-staging_hive_2021-03-24_17-12-50_598_84416585884186945-3/-ext-10000",
+					"table:": {
+						"input format:": "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat",
+						"output format:": "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat",
+						"properties:": {
+							"COLUMN_STATS_ACCURATE": "{\"BASIC_STATS\":\"true\",\"COLUMN_STATS\":{\"avg_tmpr_during_stay\":\"true\",\"checkin\":\"true\",\"checkin_tmpr\":\"true\",\"checkout\":\"true\",\"checkout_tmpr\":\"true\",\"days_of_stay\":\"true\",\"visit_id\":\"true\",\"weather_trend\":\"true\"}}",
+							"bucket_count": "-1",
+							"bucketing_version": "2",
+							"column.name.delimiter": ",",
+							"columns": "visit_id,checkin,checkout,days_of_stay,checkin_tmpr,checkout_tmpr,weather_trend,avg_tmpr_during_stay",
+							"columns.types": "bigint:string:string:int:double:double:double:double",
+							"file.inputformat": "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat",
+							"file.outputformat": "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat",
+							"location": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend",
+							"name": "default.result_wthr_trend",
+							"numFiles": "1",
+							"numRows": "55830",
+							"rawDataSize": "0",
+							"serialization.ddl": "struct result_wthr_trend { i64 visit_id, string checkin, string checkout, i32 days_of_stay, double checkin_tmpr, double checkout_tmpr, double weather_trend, double avg_tmpr_during_stay}",
+							"serialization.format": "1",
+							"serialization.lib": "org.apache.hadoop.hive.ql.io.orc.OrcSerde",
+							"totalSize": "1009667",
+							"transactional": "true",
+							"transactional_properties": "default",
+							"transient_lastDdlTime": "1616598498"
+						},
+						"serde:": "org.apache.hadoop.hive.ql.io.orc.OrcSerde",
+						"name:": "default.result_wthr_trend"
+					},
+					"Write Type:": "INSERT"
+				}
+			}
+		},
+		"Stage-3": {
+			"Stats Work": {
+				"Basic Stats Work:": {
+					"Stats Aggregation Key Prefix:": "hdfs://sandbox-hdp.hortonworks.com:8020/warehouse/tablespace/managed/hive/result_wthr_trend/.hive-staging_hive_2021-03-24_17-12-50_598_84416585884186945-3/-ext-10000/"
+				},
+				"Column Stats Desc:": {
+					"Columns:": [
+						"visit_id",
+						"checkin",
+						"checkout",
+						"days_of_stay",
+						"checkin_tmpr",
+						"checkout_tmpr",
+						"weather_trend",
+						"avg_tmpr_during_stay"
+					],
+					"Column Types:": [
+						"bigint",
+						"string",
+						"string",
+						"int",
+						"double",
+						"double",
+						"double",
+						"double"
+					],
+					"Table:": "default.result_wthr_trend",
+					"Is Table Level Stats:": "true"
+				}
+			}
+		}
+	}
+}
