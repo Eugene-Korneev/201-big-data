@@ -118,3 +118,37 @@ INSERT INTO TABLE hotels_weather
            -1 AS `__offset`,
            NULL AS `__timestamp`
     FROM hotels_weather_parquet;
+
+-- write enriched data to hdfs as parquet
+--INSERT OVERWRITE DIRECTORY '/201_hw_dataset/hotels_weather' STORED AS PARQUET
+--    SELECT * FROM hotels_weather_parquet;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS hotels_and_weather (
+        id BIGINT,
+        name STRING,
+        country STRING,
+        city STRING,
+        address STRING,
+        lat DOUBLE,
+        lng DOUBLE,
+        geohash STRING,
+        wthr_date STRING,
+        avg_tmpr_f DOUBLE,
+        avg_tmpr_c DOUBLE
+    )
+    STORED AS PARQUET
+    LOCATION '/201_hw_dataset/hotels_weather';
+
+INSERT OVERWRITE TABLE hotels_and_weather
+    SELECT id,
+           name,
+           country,
+           city,
+           address,
+           lat,
+           lng,
+           geohash,
+           wthr_date,
+           avg_tmpr_f,
+           avg_tmpr_c
+    FROM hotels_weather_parquet;
